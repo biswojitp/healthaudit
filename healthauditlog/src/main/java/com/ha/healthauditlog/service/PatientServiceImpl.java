@@ -12,6 +12,7 @@ import com.ha.healthauditlog.model.Contraception;
 import com.ha.healthauditlog.model.PatientDetails;
 import com.ha.healthauditlog.model.Referal;
 import com.ha.healthauditlog.model.Sample;
+import com.ha.healthauditlog.model.SampleResult;
 import com.ha.healthauditlog.model.SignUp;
 import com.ha.healthauditlog.repository.CommentRepository;
 import com.ha.healthauditlog.repository.ComplicationsRepository;
@@ -19,13 +20,12 @@ import com.ha.healthauditlog.repository.ContraceptionRepository;
 import com.ha.healthauditlog.repository.PatientDetailsRepository;
 import com.ha.healthauditlog.repository.ReferalRepository;
 import com.ha.healthauditlog.repository.SampleRepository;
+import com.ha.healthauditlog.repository.SampleResultRepository;
 import com.ha.healthauditlog.repository.SignUpRepository;
 
 @Service
 public class PatientServiceImpl implements PatientService{
 	
-	@Autowired
-	SignUpRepository signUpRepository;
 	@Autowired
 	PatientDetailsRepository patientDetailsRepository;
 	@Autowired
@@ -38,12 +38,8 @@ public class PatientServiceImpl implements PatientService{
 	CommentRepository commentRepository;
 	@Autowired
 	ComplicationsRepository complicationsRepository;
-
-	@Override
-	public RedirectAttributes saveSignUp(SignUp signUp, RedirectAttributes attributes, Principal principal) {
-		signUpRepository.save(signUp);
-		return null;
-	}
+	@Autowired
+	SampleResultRepository sampleResultRepository;
 
 	@Override
 	public List<PatientDetails> findAllPatientDetails() {
@@ -62,12 +58,6 @@ public class PatientServiceImpl implements PatientService{
 			Principal principal) {
 		patientDetailsRepository.save(patientDetails);
 		return null;
-	}
-
-	@Override
-	public List<SignUp> findAllUser() {
-		
-		return signUpRepository.findAll();
 	}
 
 	@Override
@@ -112,5 +102,18 @@ public class PatientServiceImpl implements PatientService{
 		
 		return complicationsRepository.findOne(complicationId);
 	}
-	
+
+	@Override
+	public List<SampleResult> findAllSampleResults() {
+		
+		return sampleResultRepository.findAll();
+	}
+
+	@Override
+	public RedirectAttributes saveSignUp(SignUp signUp, RedirectAttributes attributes, Principal principal) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+		
 }

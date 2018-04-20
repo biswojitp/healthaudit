@@ -40,21 +40,47 @@ function edit(patientId){
 
 function check()
 {
-	/* if($("#categoryId").val() == "")
-	{
-		 bootbox.alert("Please Select category name");
-		 return false;
-	} */
+	
 	if($("#firstName").val() == "")
 	{
 		 bootbox.alert("Please Enter First Name");
 		 return false;
 	}
-	if($("#lastName").val() == "")
+	else if($("#lastName").val() == "")
 	{
 		 bootbox.alert("Please Enter Last Name");
 		 return false;
 	}
+	else if($("#department").val() == "")
+	{
+		 bootbox.alert("Please Enter Department");
+		 return false;
+	} 
+	else if($("#email").val() == "")
+	{
+		 bootbox.alert("Please Enter Email");
+		 return false;
+	} 
+	else if($("#mobile").val() == "")
+	{
+		 bootbox.alert("Please Enter Mobile");
+		 return false;
+	} 
+	else if($("#referalSource").val() == "")
+	{
+		 bootbox.alert("Please Select Referal Source");
+		 return false;
+	} 
+	else if($("#dob").val() == "")
+	{
+		 bootbox.alert("Please Enter Date Of Birth");
+		 return false;
+	} 
+	else if($("#referalSource").val() == "")
+	{
+		 bootbox.alert("Please Select Referal Source");
+		 return false;
+	} 
 	else
 	{
 		$('#savePatientDetails').submit(); 
@@ -165,7 +191,7 @@ function test(){
 										<div class="col-md-12">
 											<input type="text" name="email" class="form-control"
 												id="email" maxlength="100"
-												onchange="validateNameAndCode(this)"
+												onchange="validateEmail(this)"
 												value="${patientDetailsById.email}">
 										</div>
 									</div>
@@ -177,7 +203,7 @@ function test(){
 										<div class="col-md-12">
 											<input type="text" name="mobile" class="form-control"
 												id="mobile" maxlength="12"
-												onchange="validateNameAndCode(this)"
+												onchange="validateNameAndCode(this);validateMobileNo(this)"
 												value="${patientDetailsById.mobile}">
 										</div>
 									</div>
@@ -230,12 +256,11 @@ function test(){
 
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
-										<label class="col-md-12 required" for="inputDefault"><spring:message
-												code="PATIENT.DETAILS.DATEOFCONSULTATION" />:</label>
+										<label class="col-md-12 required" for="inputDefault"><spring:message code="PATIENT.DETAILS.DATEOFCONSULTATION" />:</label>
 										<div class="col-md-12 datepicker_con">
 											<input type="text"  class="form-control jqueryNDatePicker" id="doc" name="doc" 
 											value="<fmt:formatDate value='${patientDetailsById.doc}' pattern='dd/MM/yyyy' />"
-												placeholder="dd/mm/yyyy" onclick="validateDate()" onchange="dofprocedure()"	maxlength="12">
+												placeholder="dd/mm/yyyy" onchange="dofprocedure()"	maxlength="12">
 										</div>
 									</div>
 								</div>
@@ -346,9 +371,11 @@ function test(){
 
 							<div class="row">
 								<div class="col-md-3 col-sm-3">
+								<div class="form-group">
 									<label class="col-md-12 required" for="inputDefault"><spring:message
-											code="PATIENT.DETAILS.PREANXIOLYTIC" />:</label> <select
-										class="form-control" id="preAnxiolytic" name="preAnxiolytic">
+											code="PATIENT.DETAILS.PREANXIOLYTIC" />:</label> 
+										<div class="col-md-12">
+											<select class="form-control" id="preAnxiolytic" name="preAnxiolytic">
 										<option value="">
 											<spring:message code="COMMON.LABEL.DROPDOWN.SELECT" />
 										</option>
@@ -368,6 +395,8 @@ function test(){
 											</c:otherwise>
 										</c:choose>
 									</select>
+								</div>
+								</div>
 								</div>
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
@@ -479,7 +508,8 @@ function test(){
 										<td>
 										<a class="btn btn-xs btn-circle btn-warning" onclick="edit(${patientDetails.patientId})">
 										 <i class="fa fa-pencil" aria-hidden="true" title=<spring:message code="COMMON.LABEL.EDIT"/>></i></a>
-										 <a href="viewattacheddocuments.htm?id=${patientDetails.patientId}&page=purchaseorder" class="btn btn-xs btn-circle btn-warning" target="_blank"> 
+										<a href="#"class="btn btn-xs btn-circle btn-warning" target="_blank">
+										 <%-- <a href="viewattacheddocuments.htm?id=${patientDetails.patientId}&page=purchaseorder" class="btn btn-xs btn-circle btn-warning" target="_blank"> --%> 
 										<i class="fa fa-file-pdf-o" aria-hidden="true" title=<spring:message code="COMMON.BUTTON.ICONOPEN"/>></i>
 										</a>
 										</td>

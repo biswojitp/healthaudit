@@ -106,9 +106,9 @@ $(function()
 								</a>
 								<ul class="nav nav-children">
 									<li>
-										<a href="./complicationDetails.htm">
+										<a href="./patientDetails.htm">
 											<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-											 Complications 
+											  Patient List
 										</a>
 									</li>
 									<li>
@@ -118,9 +118,11 @@ $(function()
 										</a>
 									</li>
 									<li>
-										<a href="./patientDetails.htm">
-											<i class="fa fa-long-arrow-right" aria-hidden="true"></i> 
-											Patient List
+										
+										<a href="./complicationDetails.htm">
+											<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+											Complications 
+											
 										</a>
 									</li>
 								</ul>
@@ -207,7 +209,7 @@ $(function()
 					<li class="nav-parent">
 						<a> 
 						<i class="fa fa-bar-chart" aria-hidden="true"></i> 
-							<span>Performance Overview</span>
+							<span>Reports</span>
 						</a>
 						<ul class="nav nav-children">
 							<li>

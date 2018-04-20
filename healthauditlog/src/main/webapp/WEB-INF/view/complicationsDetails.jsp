@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<!-- <script src="/javascripts/common.js"></script> -->
 
 <style>
 .datepicker_con>input {
@@ -35,19 +35,49 @@ function edit(complicationId){
 
 function check()
 {
-	/* if($("#categoryId").val() == "")
+	if($("#patientId").val() == "")
 	{
-		 bootbox.alert("Please Select category name");
+		 bootbox.alert("Please Select Patient");
 		 return false;
-	} */
-	if($("#firstName").val() == "")
+	} 
+	else if($("#complicationSection").val() == "")
 	{
-		 bootbox.alert("Please Enter First Name");
+		 bootbox.alert("Please Enter Complication Section");
 		 return false;
 	}
-	if($("#lastName").val() == "")
+	else if($("#timeAfterProcedure").val() == "")
 	{
-		 bootbox.alert("Please Enter Last Name");
+		 bootbox.alert("Please Enter TimeAfter Procedure");
+		 return false;
+	}
+	else if($("#haematospermia").val() == "")
+	{
+		 bootbox.alert("Please Enter Haematospermia");
+		 return false;
+	}
+	else if($("#smallHematoma").val() == "")
+	{
+		 bootbox.alert("Please Enter Small Hematoma");
+		 return false;
+	}
+	else if($("#largeHematoma").val() == "")
+	{
+		 bootbox.alert("Please Enter LargeHematoma");
+		 return false;
+	}
+	else if($("#chronicScrotalPain").val() == "")
+	{
+		 bootbox.alert("Please Enter Chronic Scrotal Pain");
+		 return false;
+	}
+	else if($("#painOnEjaculation").val() == "")
+	{
+		 bootbox.alert("Please Enter Pain On Ejaculation");
+		 return false;
+	}
+	else if($("#infection").val() == "")
+	{
+		 bootbox.alert("Please select Infection");
 		 return false;
 	}
 	else
@@ -62,7 +92,7 @@ function test(){
 <section role="main" class="content-body">
 	<header class="page-header">
 		<h2>
-			<spring:message code="PATIENT.MANAGEMENT.TITLE" />
+			<spring:message code="PATIENT.COMPLICATION.TITLE" />
 		</h2>
 		<%-- <div class="right-wrapper pull-right">
 			<ol class="breadcrumbs">
@@ -112,30 +142,59 @@ function test(){
 					<div class="col-md-12">
 						<form class="form-horizontal form-bordered" id="saveComplicationDetails" action="./saveComplicationDetails.htm" method="post">
 							<input type="hidden" name="complicationId" value="${complicationDetailsById.complicationId}" id="complicationId" />
-
-
+							
 							<div class="row">
-
-								<div class="col-md-3 col-sm-3">
+							<div class="col-md-3 col-sm-3">
 									<div class="form-group">
 										<label class="col-md-12 required" for="inputDefault"><spring:message
 												code="PATIENT.DETAILS.PATIENTID" />:</label>
 										<div class="col-md-12">
 											<select class="form-control" name="patientDetails.patientId" id="patientId"
 												data-plugin-selectTwo onchange="showDiv(this);show(this)">
-												<option value=""><spring:message
-														code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
+												<option value=""><spring:message code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
 												<c:forEach items="${patientDetailsList}" var="patientDetailsList">
 													<c:choose>
 														<c:when
 															test="${ patientDetailsList.patientId eq complicationDetailsById.patientDetails.patientId}">
-															<option value="${patientDetailsList.patientId}" selected="selected">${complicationDetailsById.patientDetails.patientId}</option>
+															<option value="${patientDetailsList.patientId}" selected="selected">${complicationDetailsById.patientDetails.patientId}|${complicationDetailsById.patientDetails.firstName}</option>
 														</c:when>
 														<c:otherwise>
 															<option value="${patientDetailsList.patientId}">${patientDetailsList.patientId}|${patientDetailsList.firstName}</option>
 														</c:otherwise>
 													</c:choose>
 												</c:forEach>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-3 col-sm-3">
+									<div class="form-group">
+										<label class="col-md-12 required" for="inputDefault"><spring:message
+												code="COMPLICATION.DETAILS.INFECTION" />:</label>
+										<div class="col-md-12">
+											<select class="form-control" id="infection" name="infection">
+												<option value="">
+													<spring:message code="COMMON.LABEL.DROPDOWN.SELECT" />
+												</option>
+												<c:choose>
+													<c:when test="${complicationDetailsById.infection eq true}">
+														<option value="1" selected="selected">Yes</option>
+														<option value="0">No</option>
+													</c:when>
+													<c:when
+														test="${complicationDetailsById.infection eq false}">
+														<option value="0" selected="selected">No</option>
+														<option value="1">Yes</option>
+
+													</c:when>
+													<c:otherwise>
+														<option value="0">No</option>
+														<option value="1">Yes</option>
+													</c:otherwise>
+												</c:choose>
 											</select>
 										</div>
 									</div>
@@ -219,33 +278,7 @@ function test(){
 
 							
 							<div class="row">
-								<div class="col-md-3 col-sm-3">
-									<label class="col-md-12 required" for="inputDefault"><spring:message
-											code="COMPLICATION.DETAILS.INFECTION" />:</label> <select
-										class="form-control" id="infection" name="infection">
-										<option value="">
-											<spring:message code="COMMON.LABEL.DROPDOWN.SELECT" />
-										</option>
-										<c:choose>
-											<c:when
-												test="${complicationDetailsById.infection eq true}">
-												<option value="1" selected="selected">Yes</option>
-												<option value="0">No</option>
-											</c:when>
-											<c:when
-												test="${complicationDetailsById.infection eq false}">
-												<option value="0" selected="selected">No</option>
-												<option value="1">Yes</option>
-
-											</c:when>
-											<c:otherwise>
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</c:otherwise>
-										</c:choose>
-									</select>
-								</div>
-								
+										
 								<div class="col-md-5 col-sm-5">
 									<div class="form-group">
 										<label class="col-md-12" for="inputDefault"><spring:message
@@ -300,7 +333,7 @@ function test(){
 						</c:choose>
 					</div>
 					<h2 class="panel-title">
-						<spring:message code="PATIENT.DETAILS.LIST" />
+						<spring:message code="COMPLICATION.DETAILS.LIST" />
 					</h2>
 				</header>
 				<div class="panel-body" style="display:${sectionHead}">

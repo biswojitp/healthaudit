@@ -11,6 +11,7 @@ import com.ha.healthauditlog.model.Contraception;
 import com.ha.healthauditlog.model.PatientDetails;
 import com.ha.healthauditlog.model.Referal;
 import com.ha.healthauditlog.model.Sample;
+import com.ha.healthauditlog.model.SampleResult;
 import com.ha.healthauditlog.model.SignUp;
 
 public interface PatientService {
@@ -24,7 +25,7 @@ public interface PatientService {
 	RedirectAttributes savePatientDetails(PatientDetails patientDetails, RedirectAttributes attributes,
 			Principal principal);
 
-	List<SignUp> findAllUser();
+	
 
 	List<Referal> findAllReferal();
 
@@ -40,5 +41,7 @@ public interface PatientService {
 			Principal principal);
 
 	Complications findOneComplicationDetails(Long complicationId);
+
+	List<SampleResult> findAllSampleResults();
 
 }

@@ -1,8 +1,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
+
 <!-- start: page -->
-		<section class="body-sign">
+		<section class="body-sign" >
 			<div class="center-sign">
 				<div class="panel panel-sign">
 					<div class="panel-title-sign mt-xl text-right">

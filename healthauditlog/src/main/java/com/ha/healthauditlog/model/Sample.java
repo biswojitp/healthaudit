@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,6 +23,10 @@ public class Sample implements Serializable{
 	
 	@Column(name="sample_id")
 	private Long sampleId;
+	
+	@ManyToOne
+	@JoinColumn(name="patient_id")
+	private PatientDetails patientDetails;
 	
 	@Column(name="sample_date")
 	private Date sampleDate;
@@ -61,6 +67,22 @@ public class Sample implements Serializable{
 
 	public void setSampleId(Long sampleId) {
 		this.sampleId = sampleId;
+	}
+	
+	public PatientDetails getPatientDetails() {
+		return patientDetails;
+	}
+
+	public void setPatientDetails(PatientDetails patientDetails) {
+		this.patientDetails = patientDetails;
+	}
+
+	public String getAction4thSample() {
+		return action4thSample;
+	}
+
+	public void setAction4thSample(String action4thSample) {
+		this.action4thSample = action4thSample;
 	}
 
 	public Date getSampleDate() {

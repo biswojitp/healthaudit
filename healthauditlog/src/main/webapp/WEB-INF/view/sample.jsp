@@ -5,11 +5,55 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<script src="static/javascripts/common.js"></script>
+<script src="/javascripts/common.js"></script>
+<link rel="stylesheet" href="/stylesheets/autocompleet.css" />
+<script src="/javascripts/document/jquery.autocomplete.min.js"></script>
+<link rel="stylesheet" href="/assets/vendor/jquery_datepicker/jquery.datepick.css">
+<script src="/assets/vendor/jquery_datepicker/jquery.plugin.js"></script>
+<script src="/assets/vendor/jquery_datepicker/jquery.datepick.js"></script>
+
+<style>
+.datepicker_con>input {
+	width: 100%;
+	border-radius: 3px;
+	border: 1px solid #aaaaaa;
+}
+</style>
+<script type="text/javascript">
+
+function check()
+{
+	
+	if($("#result1stSample").val() == "")
+	{
+		 bootbox.alert("Please Enter Result Of 1st Sample");
+		 return false;
+	}
+	else if($("#action1stSample").val() == "")
+	{
+		 bootbox.alert("Please Enter Action 1st Sample");
+		 return false;
+	}
+	else if($("#result2ndSample").val() == "")
+	{
+		 bootbox.alert("Please Enter Result Of 2nd Sample");
+		 return false;
+	} 
+	else if($("#action2ndSample").val() == "")
+	{
+		 bootbox.alert("Please Enter Action 2nd Sample");
+		 return false;
+	} 
+	else
+	{
+		$('#createSample').submit(); 
+	}
+}
+</script>
 <section role="main" class="content-body">
 	<header class="page-header">
 		<h2>
-			<spring:message code="PATIENT.MANAGEMENT.TITLE" />
+			<spring:message code="PATIENT.SAMPLE.TITLE" />
 		</h2>
 		<%-- <div class="right-wrapper pull-right">
 			<ol class="breadcrumbs">
@@ -20,16 +64,59 @@
 	</header>
 
 	<%@ include file="/WEB-INF/view/message.jsp"%>
-<div class="panel-body" style="display:${sectionHead}">
+		<div class="panel-body" style="display:${sectionHead}">
 					<div class="col-md-12">
 						<form class="form-horizontal form-bordered" id="createSample" action="./createSample.htm" method="post">
-											
 						<div class="row">
 						<div class="col-md-3 col-sm-3">
 									<div class="form-group">
-										<label class="col-md-12 required" for="inputDefault"> <spring:message code="PATIENT.SAMPLE.1STRESULT" /></label>
+										<label class="col-md-12 required" for="inputDefault"><spring:message
+												code="PATIENT.DETAILS.PATIENTID" />:</label>
 										<div class="col-md-12">
-											<input type="text" class="form-control" name="result1stSample" id="result1stSample" value="${treatmentPlantById.itemName}" maxlength="100" onchange ="validateNameAndCode(this)"  /> 
+											<select class="form-control" name="patientDetails.patientId" id="patientId"
+												data-plugin-selectTwo onchange="showDiv(this);show(this)">
+												<option value=""><spring:message code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
+												<c:forEach items="${patientDetailsList}" var="patientDetailsList">
+													<c:choose>
+														<c:when
+															test="${ patientDetailsList.patientId eq complicationDetailsById.patientDetails.patientId}">
+															<option value="${patientDetailsList.patientId}" selected="selected">${complicationDetailsById.patientDetails.patientId}</option>
+														</c:when>
+														<c:otherwise>
+															<option value="${patientDetailsList.patientId}">${patientDetailsList.patientId}|${patientDetailsList.firstName}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+								</div>
+						</div>					
+						<div class="row">
+						
+								<div class="col-md-3 col-sm-3">
+									<div class="form-group">
+										<label class="col-md-12 required" for="inputDefault"><spring:message
+												code="PATIENT.SAMPLE.1STRESULT" />:</label>
+										<div class="col-md-12">
+											<select class="form-control" name="result1stSample"
+												id="result1stSample" data-plugin-selectTwo
+												onchange="showDiv(this);show(this)">
+												<option value=""><spring:message
+														code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
+												<c:forEach items="${sampleResultList}" var="sampleResultList">
+													<c:choose>
+														<c:when
+															test="${ sampleResultList.result eq patientDetailsById.referalSource}">
+															<option value="${referalList.referalSource}"
+																selected="selected">${patientDetailsById.referalSource}</option>
+														</c:when>
+														<c:otherwise>
+															<option value="${sampleResultList.result}">${sampleResultList.result}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -96,24 +183,33 @@
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
 										<label class="col-md-12 required" for="inputDefault"> <spring:message code="PATIENT.SAMPLE.SAMPLEDATE" /></label>
-										<div class="col-md-12">
-											<input type="text" class="form-control" name="sampleDate" id="sampleDate" value="${treatmentPlantById.result3rdSample}"  maxlength="20" onchange ="validateNameAndCode(this)" /> 
+										<div class="col-md-12 datepicker_con">
+											<input type="text" class="form-control jqueryNDatePicker" id="sampleDate" name="sampleDate"
+											value="<fmt:formatDate value='${treatmentPlantById.sampleDate}' pattern='dd/MM/yyyy' />"
+												placeholder="dd/mm/yyyy" onclick="validateDate()"	
+												maxlength="12" onchange="test(this)">
 										</div>
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
 										<label class="col-md-12 required" for="inputDefault"> <spring:message code="PATIENT.SAMPLE.DUEDATE" /></label>
-										<div class="col-md-12">
-											<input type="text" class="form-control" name="sampleDueDate" id="sampleDueDate" value="${treatmentPlantById.sampleDueDate}"  maxlength="20" onchange ="validateNameAndCode(this)" /> 
+										<div class="col-md-12 datepicker_con">
+											<input type="text" class="form-control jqueryNDatePicker" id="sampleDueDate" name="sampleDueDate"
+											value="<fmt:formatDate value='${treatmentPlantById.sampleDueDate}' pattern='dd/MM/yyyy' />"
+												placeholder="dd/mm/yyyy" onclick="validateDate()"	
+												maxlength="12" onchange="test(this)">
 										</div>
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
 										<label class="col-md-12 required" for="inputDefault"> <spring:message code="PATIENT.SAMPLE.TELSMSDATE" /></label>
-										<div class="col-md-12">
-											<input type="text" class="form-control" name="telSmsDate" id="telSmsDate" value="${treatmentPlantById.telSmsDate}"  maxlength="20" onchange ="validateNameAndCode(this)" /> 
+										<div class="col-md-12 datepicker_con">
+											<input type="text" class="form-control jqueryNDatePicker" id="telSmsDate" name="telSmsDate"
+											value="<fmt:formatDate value='${treatmentPlantById.telSmsDate}' pattern='dd/MM/yyyy' />"
+												placeholder="dd/mm/yyyy" onclick="validateDate()"	
+												maxlength="12" onchange="test(this)">
 										</div>
 									</div>
 								</div>
@@ -159,9 +255,9 @@
 								
 							
 							<div class="row">
-							<button type="submit" class="btn btn-success" >
-											<spring:message code="COMMON.BUTTON.SUBMIT"></spring:message>
-										</button>
+							<button type="button" class="btn btn-success" onclick="check()">
+								<spring:message code="COMMON.BUTTON.SAVE"></spring:message>
+							</button>
 							</div>
 							
 						</form>
@@ -196,15 +292,6 @@ function addPetitioner()
   $("#tbody3").append(htmldata);
 	
 }
-$('body').on('focus',".jqueryNDatePicker", function(){
-	    $(this).datepick();
-	    
-	 });
-$(".jqueryNDatePicker").datepick({
-	constrainInput:false,
-		dateFormat: 'dd/mm/yyyy',
-		showOnFocus: true,
-	});
 
 function deleteRow(val)
 {
@@ -213,4 +300,13 @@ function deleteRow(val)
     
 }
 
+</script>
+
+<script type="text/javascript">
+$(".jqueryNDatePicker").datepick({
+	constrainInput:false,
+		dateFormat: 'dd/mm/yyyy',
+		showOnFocus: true,
+		
+	});
 </script>

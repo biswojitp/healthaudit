@@ -23,8 +23,9 @@ import com.ha.healthauditlog.config.DataSourceConfig;
 import com.ha.healthauditlog.model.Complications;
 import com.ha.healthauditlog.model.PatientDetails;
 import com.ha.healthauditlog.model.Sample;
-import com.ha.healthauditlog.model.SignUp;
 import com.ha.healthauditlog.service.PatientService;
+import com.ha.healthauditlog.service.UserService;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -39,36 +40,19 @@ import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 @Controller
 public class PatientController {
 	private final Logger log = Logger.getLogger(this.getClass());
+	
 	@Autowired
 	PatientService patientService;
 	@Autowired
+	UserService userService;
+	@Autowired
 	DataSourceConfig dataSourceConfig;
-	
-	@RequestMapping("/")
-	public String welcome() {
-	  return "app.welcome";
-	}
-	@RequestMapping("/welcome")
-	public String welcome1() {
-	  return "app.welcome";
-	}
-	@RequestMapping("/signup.htm")
-	public String signup() {
-	  return "app.signup";
-	}
-	
-	@RequestMapping(value = "/saveSignUp.htm", method = RequestMethod.POST)
-	public RedirectView saveDetails(@ModelAttribute("signUp") SignUp signUp,
-			RedirectAttributes attributes,HttpSession session ,Principal principal) {
-		//System.out.println("item name "+signUp.getItemName());
-		attributes = patientService.saveSignUp(signUp, attributes, principal);
-		return new RedirectView("signup.htm", true);
-	}
+		
 	@RequestMapping(value = "/patientDetails.htm", method = RequestMethod.GET)
 	public ModelAndView getPatientDetails() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("patientDetailsList",patientService.findAllPatientDetails()); 
-		mav.addObject("userList",patientService.findAllUser()); 
+		mav.addObject("userList",userService.findAllUser()); 
 		mav.addObject("referalList",patientService.findAllReferal()); 
 		mav.addObject("contraceptionList",patientService.findAllcontraception());
 		mav.addObject("commentList",patientService.findAllComment());
@@ -88,7 +72,7 @@ public class PatientController {
 		ModelAndView mav = new ModelAndView();
 		//User user = userService.findByUsername(principal.getName());
 		mav.addObject("patientDetailsList",patientService.findAllPatientDetails()); 
-		mav.addObject("userList",patientService.findAllUser()); 
+		mav.addObject("userList",userService.findAllUser()); 
 		mav.addObject("referalList",patientService.findAllReferal()); 
 		mav.addObject("contraceptionList",patientService.findAllcontraception());
 		mav.addObject("commentList",patientService.findAllComment());
@@ -99,7 +83,8 @@ public class PatientController {
 	@RequestMapping(value = "/sampleDetails.htm", method = RequestMethod.GET)
 	public ModelAndView getSampleDetails() {
 		ModelAndView mav = new ModelAndView();
-		//mav.addObject("patientDetailsList",patientService.findAllPatientDetails()); 
+		mav.addObject("patientDetailsList",patientService.findAllPatientDetails());
+		mav.addObject("sampleResultList",patientService.findAllSampleResults());
 		mav.setViewName("sample");
 		return mav;
 		

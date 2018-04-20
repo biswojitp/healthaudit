@@ -3,6 +3,8 @@ package com.ha.healthauditlog.model;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -11,52 +13,56 @@ import java.util.Set;
 @Table(name = "t_user")
 public class User implements Serializable{
    
-	private static final long serialVersionUID = 3988559281160314733L;
+	private static final long serialVersionUID = 1L;
 
-	private Long id;
-    private String username;
-    private String password;
-    private String confirmPassword;
-    private String firstname;
-    private String lastname;
-    private Date dob;
-    private String mobile;
-    private String email;
-   
-    private boolean accountNonLocked;
-    private boolean enabled;
-    private Date updatedDate;
-	private Set<Role> roles;
-	private String addinlPara;
-    
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return id;
-    }
+	@GenericGenerator(name="id",strategy="increment")
+	@GeneratedValue(generator="id")
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getUsername() {
-        return username;
-    }
+	@Column(name="user_id")
+	private Long userid;
+	
+	@Column(name="user_name")
+    private String username;
+	
+	@Column(name="password")
+	private String password;
+    
+	@Column(name="confirm_password")
+	private String confirmPassword;
+    
+	/*@ManyToOne
+	@Column(name="role_id")*/
+	@ManyToMany
+	 @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public Long getUserid() {
+		return userid;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUserid(Long userid) {
+		this.userid = userid;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    @Transient
-    public String getConfirmPassword() {
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getConfirmPassword() {
 		return confirmPassword;
 	}
 
@@ -64,87 +70,14 @@ public class User implements Serializable{
 		this.confirmPassword = confirmPassword;
 	}
 
-	@ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))  
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-	public String getFirstname() {
-		return firstname;
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public Date getDob() {
-		return dob;
-	}
-
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    
+	    
 	
-	 
-	public boolean isAccountNonLocked() {
-		return accountNonLocked;
-	}
-
-	public void setAccountNonLocked(boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}	
-	 
-    public Date getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-	@Column(name="additnl_para")
-	public String getAddinlPara() {
-		return addinlPara;
-	}
-
-	public void setAddinlPara(String addinlPara) {
-		this.addinlPara = addinlPara;
-	} 
 }
