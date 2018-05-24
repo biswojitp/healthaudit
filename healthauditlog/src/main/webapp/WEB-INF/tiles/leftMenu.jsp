@@ -106,7 +106,7 @@ $(function()
 								</a>
 								<ul class="nav nav-children">
 									<li>
-										<a href="./patientDetails.htm">
+										<a href="./patientComplicationDetails.htm">
 											<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 											  Patient List
 										</a>
@@ -117,14 +117,14 @@ $(function()
 											Samples 
 										</a>
 									</li>
-									<li>
+									<!-- <li>
 										
 										<a href="./complicationDetails.htm">
 											<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 											Complications 
 											
 										</a>
-									</li>
+									</li> -->
 								</ul>
 							</li>
 						</ul>

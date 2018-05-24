@@ -3,8 +3,9 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<queryString language="SQL">
-		<![CDATA[select *from t_patient]]>
+	<parameter name="nhPatientId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from t_patient where patient_id=$P{nhPatientId}]]>
 	</queryString>
 	<field name="patient_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>

@@ -1,7 +1,7 @@
 package com.ha.healthauditlog.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,27 +27,15 @@ public class Complications implements Serializable{
 	@Column(name="complication_id")
 	private Long complicationId;
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name="patient_id")
 	private PatientDetails patientDetails;
-	
+*/	
 	@Column(name="complication_section")
 	private String complicationSection;
 	
-	@Column(name="doc")
-	private Date doc;
-	
-	@Column(name="time_after_procedure")
-	private String timeAfterProcedure;
-	
 	@Column(name="infection")
 	private Boolean infection;
-	
-	@Column(name="small_hematoma")
-	private String smallHematoma;
-	
-	@Column(name="large_hematoma")
-	private String largeHematoma;
 	
 	@Column(name="chronic_scrotal_pain")
 	private String chronicScrotalPain;
@@ -56,7 +44,22 @@ public class Complications implements Serializable{
 	private String painOnEjaculation;
 	
 	@Column(name="haematospermia")
-	private String haematospermia;
+	private String hematospermia;
+	
+	@Column(name="failure_vasiotomy")
+	private String failureVasiotomy;
+	
+	@Column(name="patient_partner_pegnent")
+	private String patientPartnerPegnent;
+	
+	@Column(name="operative_note_details")
+	private String operativeNoteDetails;
+	
+	@Column(name="antibiotic_post_operative_period")
+	private String antibioticPostOperativePeriod;
+	
+	@Column(name="vasovagal")
+	private String vasovagal;
 	
 	@Column(name="description")
 	private String description;
@@ -69,14 +72,6 @@ public class Complications implements Serializable{
 		this.complicationId = complicationId;
 	}
 
-	public PatientDetails getPatientDetails() {
-		return patientDetails;
-	}
-
-	public void setPatientDetails(PatientDetails patientDetails) {
-		this.patientDetails = patientDetails;
-	}
-
 	public String getComplicationSection() {
 		return complicationSection;
 	}
@@ -85,44 +80,12 @@ public class Complications implements Serializable{
 		this.complicationSection = complicationSection;
 	}
 
-	public Date getDoc() {
-		return doc;
-	}
-
-	public void setDoc(Date doc) {
-		this.doc = doc;
-	}
-
-	public String getTimeAfterProcedure() {
-		return timeAfterProcedure;
-	}
-
-	public void setTimeAfterProcedure(String timeAfterProcedure) {
-		this.timeAfterProcedure = timeAfterProcedure;
-	}
-
 	public Boolean getInfection() {
 		return infection;
 	}
 
 	public void setInfection(Boolean infection) {
 		this.infection = infection;
-	}
-
-	public String getSmallHematoma() {
-		return smallHematoma;
-	}
-
-	public void setSmallHematoma(String smallHematoma) {
-		this.smallHematoma = smallHematoma;
-	}
-
-	public String getLargeHematoma() {
-		return largeHematoma;
-	}
-
-	public void setLargeHematoma(String largeHematoma) {
-		this.largeHematoma = largeHematoma;
 	}
 
 	public String getChronicScrotalPain() {
@@ -142,11 +105,51 @@ public class Complications implements Serializable{
 	}
 
 	public String getHaematospermia() {
-		return haematospermia;
+		return hematospermia;
 	}
 
 	public void setHaematospermia(String haematospermia) {
-		this.haematospermia = haematospermia;
+		this.hematospermia = haematospermia;
+	}
+
+	public String getFailureVasiotomy() {
+		return failureVasiotomy;
+	}
+
+	public void setFailureVasiotomy(String failureVasiotomy) {
+		this.failureVasiotomy = failureVasiotomy;
+	}
+
+	public String getPatientPartnerPegnent() {
+		return patientPartnerPegnent;
+	}
+
+	public void setPatientPartnerPegnent(String patientPartnerPegnent) {
+		this.patientPartnerPegnent = patientPartnerPegnent;
+	}
+
+	public String getOperativeNoteDetails() {
+		return operativeNoteDetails;
+	}
+
+	public void setOperativeNoteDetails(String operativeNoteDetails) {
+		this.operativeNoteDetails = operativeNoteDetails;
+	}
+
+	public String getAntibioticPostOperativePeriod() {
+		return antibioticPostOperativePeriod;
+	}
+
+	public void setAntibioticPostOperativePeriod(String antibioticPostOperativePeriod) {
+		this.antibioticPostOperativePeriod = antibioticPostOperativePeriod;
+	}
+
+	public String getVasovagal() {
+		return vasovagal;
+	}
+
+	public void setVasovagal(String vasovagal) {
+		this.vasovagal = vasovagal;
 	}
 
 	public String getDescription() {
@@ -156,6 +159,5 @@ public class Complications implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
 }

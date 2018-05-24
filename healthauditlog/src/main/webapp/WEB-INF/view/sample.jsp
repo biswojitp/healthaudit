@@ -67,6 +67,7 @@ function check()
 		<div class="panel-body" style="display:${sectionHead}">
 					<div class="col-md-12">
 						<form class="form-horizontal form-bordered" id="createSample" action="./createSample.htm" method="post">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<div class="row">
 						<div class="col-md-3 col-sm-3">
 									<div class="form-group">

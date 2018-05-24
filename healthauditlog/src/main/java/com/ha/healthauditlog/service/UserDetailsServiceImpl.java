@@ -15,7 +15,7 @@ import com.ha.healthauditlog.model.Role;
 import com.ha.healthauditlog.model.User;
 import com.ha.healthauditlog.repository.UserRepository;
 
-
+@Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService{
 	@Autowired
 	 private UserRepository userRepository;
@@ -29,6 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	 grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 	 }
 
-	 return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+	 return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);
 	 }
 }

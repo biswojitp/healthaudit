@@ -3,12 +3,14 @@ package com.ha.healthauditlog.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -26,14 +28,18 @@ public class PatientDetails implements Serializable{
 	@Column(name="patient_id")
 	private Long patientId;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="complication_id")
+	private Complications complications;
+
 	@Column(name="first_name")
 	private String firstName;
 	
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Column(name="department")
-	private String department;
+	@Column(name="clinic_name")
+	private String clinicName;
 	
 	@Column(name="email")
 	private String email;
@@ -62,7 +68,7 @@ public class PatientDetails implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
-	private SignUp signUp;
+	private User signUp;
 	
 	@Column(name="dop")
 	private Date dop;
@@ -78,6 +84,9 @@ public class PatientDetails implements Serializable{
 	
 	@Column(name="pre_anxiolytic")
 	private String preAnxiolytic;
+	
+	@Column(name="allergy")
+	private String allergy;
 
 	public Long getPatientId() {
 		return patientId;
@@ -85,6 +94,14 @@ public class PatientDetails implements Serializable{
 
 	public void setPatientId(Long patientId) {
 		this.patientId = patientId;
+	}
+	
+	public Complications getComplications() {
+		return complications;
+	}
+
+	public void setComplications(Complications complications) {
+		this.complications = complications;
 	}
 
 	public String getFirstName() {
@@ -103,12 +120,12 @@ public class PatientDetails implements Serializable{
 		this.lastName = lastName;
 	}
 
-	public String getDepartment() {
-		return department;
+	public String getClinicName() {
+		return clinicName;
 	}
 
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setClinicName(String clinicName) {
+		this.clinicName = clinicName;
 	}
 
 	public String getEmail() {
@@ -175,11 +192,11 @@ public class PatientDetails implements Serializable{
 		this.currentContraception = currentContraception;
 	}
 
-	public SignUp getSignUp() {
+	public User getSignUp() {
 		return signUp;
 	}
 
-	public void setSignUp(SignUp signUp) {
+	public void setSignUp(User signUp) {
 		this.signUp = signUp;
 	}
 
@@ -222,6 +239,16 @@ public class PatientDetails implements Serializable{
 	public void setPreAnxiolytic(String preAnxiolytic) {
 		this.preAnxiolytic = preAnxiolytic;
 	}
+
+	public String getAllergy() {
+		return allergy;
+	}
+
+	public void setAllergy(String allergy) {
+		this.allergy = allergy;
+	}
+
+	
 	
 	
 	

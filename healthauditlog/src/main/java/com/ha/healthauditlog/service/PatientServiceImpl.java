@@ -9,15 +9,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ha.healthauditlog.model.Comment;
 import com.ha.healthauditlog.model.Complications;
 import com.ha.healthauditlog.model.Contraception;
+import com.ha.healthauditlog.model.NoOfChild;
+import com.ha.healthauditlog.model.PatientComplicationDetails;
 import com.ha.healthauditlog.model.PatientDetails;
+import com.ha.healthauditlog.model.ProcedureName;
 import com.ha.healthauditlog.model.Referal;
 import com.ha.healthauditlog.model.Sample;
 import com.ha.healthauditlog.model.SampleResult;
-import com.ha.healthauditlog.model.SignUp;
+import com.ha.healthauditlog.model.User;
 import com.ha.healthauditlog.repository.CommentRepository;
 import com.ha.healthauditlog.repository.ComplicationsRepository;
 import com.ha.healthauditlog.repository.ContraceptionRepository;
+import com.ha.healthauditlog.repository.NoOfChildRepository;
+import com.ha.healthauditlog.repository.PatientComplicationDetailsRepository;
 import com.ha.healthauditlog.repository.PatientDetailsRepository;
+import com.ha.healthauditlog.repository.ProcedureNameRepository;
 import com.ha.healthauditlog.repository.ReferalRepository;
 import com.ha.healthauditlog.repository.SampleRepository;
 import com.ha.healthauditlog.repository.SampleResultRepository;
@@ -40,7 +46,14 @@ public class PatientServiceImpl implements PatientService{
 	ComplicationsRepository complicationsRepository;
 	@Autowired
 	SampleResultRepository sampleResultRepository;
-
+	@Autowired
+	NoOfChildRepository noOfChildRepository;
+	@Autowired
+	ProcedureNameRepository procedureNameRepository;
+	
+	@Autowired
+	PatientComplicationDetailsRepository patientComplicationDetailsRepository;
+	
 	@Override
 	public List<PatientDetails> findAllPatientDetails() {
 		List<PatientDetails> patientList=patientDetailsRepository.findAll();
@@ -110,9 +123,40 @@ public class PatientServiceImpl implements PatientService{
 	}
 
 	@Override
-	public RedirectAttributes saveSignUp(SignUp signUp, RedirectAttributes attributes, Principal principal) {
+	public RedirectAttributes saveSignUp(User signUp, RedirectAttributes attributes, Principal principal) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<NoOfChild> findAllChildList() {
+		
+		return noOfChildRepository.findAll();
+	}
+
+	@Override
+	public List<ProcedureName> findAllProcedureNameList() {
+		
+		return procedureNameRepository.findAll();
+	}
+
+	@Override
+	public RedirectAttributes savePatientComplicationDetails(PatientComplicationDetails patientComplicationDetails,
+			RedirectAttributes attributes, Principal principal) {
+		patientComplicationDetailsRepository.save(patientComplicationDetails);
+		return null;
+	}
+
+	@Override
+	public PatientComplicationDetails findOnePatientComplicationDetails(Long patientId) {
+		
+		return patientComplicationDetailsRepository.findOne(patientId);
+	}
+
+	@Override
+	public List<PatientComplicationDetails> findAllPatientComplicationDetails() {
+		
+		return patientComplicationDetailsRepository.findAllDesc();
 	}
 
 		

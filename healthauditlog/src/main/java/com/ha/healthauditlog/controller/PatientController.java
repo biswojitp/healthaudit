@@ -5,8 +5,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.ha.healthauditlog.config.DataSourceConfig;
 import com.ha.healthauditlog.model.Complications;
+import com.ha.healthauditlog.model.PatientComplicationDetails;
 import com.ha.healthauditlog.model.PatientDetails;
 import com.ha.healthauditlog.model.Sample;
 import com.ha.healthauditlog.service.PatientService;
@@ -56,6 +61,8 @@ public class PatientController {
 		mav.addObject("referalList",patientService.findAllReferal()); 
 		mav.addObject("contraceptionList",patientService.findAllcontraception());
 		mav.addObject("commentList",patientService.findAllComment());
+		mav.addObject("noOfChildList",patientService.findAllChildList());
+		mav.addObject("procedureNameList",patientService.findAllProcedureNameList());
 		mav.setViewName("patientDetails");
 		return mav;
 		
@@ -76,6 +83,8 @@ public class PatientController {
 		mav.addObject("referalList",patientService.findAllReferal()); 
 		mav.addObject("contraceptionList",patientService.findAllcontraception());
 		mav.addObject("commentList",patientService.findAllComment());
+		mav.addObject("noOfChildList",patientService.findAllChildList());
+		mav.addObject("procedureNameList",patientService.findAllProcedureNameList());
 		mav.addObject("patientDetailsById",patientService.findOnePatientDetails(patientId)); 
 		mav.setViewName("patientDetails");
 		return mav;
@@ -103,7 +112,6 @@ public class PatientController {
 		mav.addObject("patientDetailsList",patientService.findAllPatientDetails()); 
 		mav.setViewName("complicationsDetails");
 		return mav;
-		
 	}
 	@RequestMapping(value = "/saveComplicationDetails.htm", method = RequestMethod.POST)
 	public RedirectView saveComplicationDetails(@ModelAttribute("complications") Complications complications,
@@ -111,6 +119,23 @@ public class PatientController {
 			attributes = patientService.saveComplicationDetails(complications, attributes, principal);
 		return new RedirectView("complicationDetails.htm", true);
 	}
+	/*@RequestMapping(value = "/saveComplicationDetails.htm", method = RequestMethod.POST)
+	public RedirectView saveComplicationDetails(@RequestParam("complicationId") Long complicationId,
+			@RequestParam("patientDetails") PatientDetails patientDetails,
+			@RequestParam("complicationSection") String complicationSection,
+			@RequestParam("infection") Boolean infection,
+			@RequestParam("chronicScrotalPain") String chronicScrotalPain,
+			@RequestParam("painOnEjaculation") String painOnEjaculation,
+			@RequestParam("hematospermia") String hematospermia,
+			@RequestParam("failureVasiotomy") String failureVasiotomy,
+			@RequestParam("patientPartnerPegnent") String patientPartnerPegnent,
+			@RequestParam("operativeNoteDetails") String operativeNoteDetails,
+			@RequestParam("antibioticPostOperativePeriod") String antibioticPostOperativePeriod,
+			RedirectAttributes attributes,HttpSession session ,Principal principal) {
+			attributes = patientService.saveComplicationDetails(complicationId,patientDetails,complicationSection,infection,chronicScrotalPain,painOnEjaculation, 
+					hematospermia,failureVasiotomy,patientPartnerPegnent,operativeNoteDetails,antibioticPostOperativePeriod,attributes, principal);
+		return new RedirectView("complicationDetails.htm", true);
+	}*/
 	@RequestMapping(value = "/complicationDetails.htm", method = RequestMethod.POST)
 	public ModelAndView editComplicationDetails(@RequestParam("complicationId")Long complicationId,HttpSession session, Principal principal) {
 		ModelAndView mav = new ModelAndView();
@@ -121,13 +146,57 @@ public class PatientController {
 		mav.setViewName("complicationsDetails");
 		return mav;
     }
+	@RequestMapping(value = "/patientDetailsToComplication.htm", method = RequestMethod.POST)
+	public ModelAndView patientDetailsToComplication(@RequestParam("patientId")Long patientId,HttpSession session, Principal principal) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("patientDetailsById",patientService.findOnePatientDetails(patientId)); 
+		mav.setViewName("complicationsDetails");
+		return mav;
+    }
+	@RequestMapping(value = "/patientComplicationDetails.htm", method = RequestMethod.GET)
+	public ModelAndView getpatientComplicationDetails() {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("patientDetailsList",patientService.findAllPatientComplicationDetails()); 
+		mav.addObject("userList",userService.findAllUser()); 
+		mav.addObject("referalList",patientService.findAllReferal()); 
+		mav.addObject("contraceptionList",patientService.findAllcontraception());
+		mav.addObject("commentList",patientService.findAllComment());
+		mav.addObject("noOfChildList",patientService.findAllChildList());
+		mav.addObject("procedureNameList",patientService.findAllProcedureNameList());
+		mav.setViewName("patientComplicationDetails");
+		return mav;
+		
+	}
+	@RequestMapping(value = "/savePatientComplicationDetails.htm", method = RequestMethod.POST)
+	public RedirectView savePatientComplicationDetails(@ModelAttribute("patientComplicationDetails") PatientComplicationDetails patientComplicationDetails,
+		RedirectAttributes attributes,HttpSession session ,Principal principal) {
+		attributes = patientService.savePatientComplicationDetails(patientComplicationDetails, attributes, principal);
+		return new RedirectView("patientComplicationDetails.htm", true);
+	}
+	@RequestMapping(value = "/patientComplicationDetails.htm", method = RequestMethod.POST)
+	public ModelAndView editPatientComplicationDetails(@RequestParam("patientId")Long patientId,HttpSession session, Principal principal) {
+		ModelAndView mav = new ModelAndView();
+		//User user = userService.findByUsername(principal.getName());
+		mav.addObject("patientDetailsList",patientService.findAllPatientComplicationDetails()); 
+		mav.addObject("userList",userService.findAllUser()); 
+		mav.addObject("referalList",patientService.findAllReferal()); 
+		mav.addObject("contraceptionList",patientService.findAllcontraception());
+		mav.addObject("commentList",patientService.findAllComment());
+		mav.addObject("noOfChildList",patientService.findAllChildList());
+		mav.addObject("procedureNameList",patientService.findAllProcedureNameList());
+		mav.addObject("patientDetailsById",patientService.findOnePatientComplicationDetails(patientId)); 
+		mav.setViewName("patientComplicationDetails");
+		return mav;
+    }
 	@RequestMapping(path = "/pdf", method = RequestMethod.GET)
 	@ResponseBody
-	public Object report(HttpServletResponse response) {
+	public Object report(@RequestParam("patientId")Long patientId,HttpServletResponse response ) {
 
 		InputStream kitchenReportStream = getClass().getResourceAsStream("/report/patientdetails.jrxml");
 			JasperReport jasperReport=null;
 			try {
+				
 				jasperReport = JasperCompileManager.compileReport(kitchenReportStream);
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
@@ -136,9 +205,11 @@ public class PatientController {
 		
 		JasperPrint jasperPrint=null;
 		try {
+				Map<String, Object> parameters = new HashMap<>();
+				parameters.put("nhPatientId", patientId);
 			
 				jasperPrint = JasperFillManager.fillReport(
-				jasperReport, null, dataSourceConfig.dataSource().getConnection());
+				jasperReport, parameters, dataSourceConfig.dataSource().getConnection());
 			
 		} catch (JRException e) {
 			// TODO Auto-generated catch block

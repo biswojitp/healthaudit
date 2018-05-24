@@ -51,11 +51,7 @@ function check()
 		 bootbox.alert("Please Enter Last Name");
 		 return false;
 	}
-	else if($("#department").val() == "")
-	{
-		 bootbox.alert("Please Enter Department");
-		 return false;
-	} 
+	
 	else if($("#email").val() == "")
 	{
 		 bootbox.alert("Please Enter Email");
@@ -140,6 +136,7 @@ function test(){
 				<div class="panel-body" style="display:${sectionHead}">
 					<div class="col-md-12">
 						<form class="form-horizontal form-bordered" id="savePatientDetails" action="./savePatientDetails.htm" method="post">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<input type="hidden" name="patientId" value="${patientDetailsById.patientId}" id="patientId" />
 							
 
@@ -175,12 +172,12 @@ function test(){
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
 										<label class="col-md-12 required" for="inputDefault"><spring:message
-												code="HOME.REGISTER.DEPARTMENT" />:</label>
+												code="HOME.REGISTER.CLINICNAME" />:</label>
 										<div class="col-md-12">
-											<input type="text" name="department" class="form-control"
-												id="department" maxlength="9"
+											<input type="text" name="clinicName" class="form-control"
+												id="clinicName" maxlength="9"
 												onchange="validateNameAndCode(this)"
-												value="${patientDetailsById.department}">
+												value="${patientDetailsById.clinicName}">
 										</div>
 									</div>
 								</div>
@@ -278,8 +275,7 @@ function test(){
 								</div>
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
-										<label class="col-md-12 required" for="inputDefault"><spring:message
-												code="PATIENT.DETAILS.DATEOFPROCESSING" />:</label>
+										<label class="col-md-12 required" for="inputDefault"><spring:message code="PATIENT.DETAILS.DATEOFPROCESSING" />:</label>
 										<div class="col-md-12 datepicker_con">
 											<input type="text" class="form-control jqueryNDatePicker" id="dop" name="dop"
 											value="<fmt:formatDate value='${patientDetailsById.dop}' pattern='dd/MM/yyyy' />"
@@ -295,10 +291,22 @@ function test(){
 										<label class="col-md-12 required" for="inputDefault"><spring:message
 												code="PATIENT.DETAILS.NOOFCHILD" />:</label>
 										<div class="col-md-12">
-											<input type="text" name="noOfChild" class="form-control"
-												id="noOfChild" maxlength="9"
-												onchange="validateNameAndCode(this)"
-												value="${patientDetailsById.noOfChild}">
+											<select class="form-control" name="noOfChild" id="noOfChild" data-plugin-selectTwo onchange="showDiv(this);show(this)">
+												<option value=""><spring:message
+														code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
+												<c:forEach items="${noOfChildList}" var="noOfChildObj">
+													<c:choose>
+														<c:when
+															test="${ noOfChildObj.noOfChild eq patientDetailsById.noOfChild}">
+															<option value="${noOfChildObj.noOfChild}"
+																selected="selected">${patientDetailsById.noOfChild}</option>
+														</c:when>
+														<c:otherwise>
+															<option value="${noOfChildObj.noOfChild}">${noOfChildObj.noOfChild}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -359,10 +367,21 @@ function test(){
 										<label class="col-md-12 required" for="inputDefault"><spring:message
 												code="PATIENT.DETAILS.PROCEDURENAME" />:</label>
 										<div class="col-md-12">
-											<input type="text" name="procedureName" class="form-control"
-												id="procedureName" maxlength="9"
-												onchange="validateNameAndCode(this)"
-												value="${patientDetailsById.procedureName}">
+											<select class="form-control" name="procedureName" id="procedureName" data-plugin-selectTwo onchange="showDiv(this);show(this)">
+												<option value=""><spring:message code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
+												<c:forEach items="${procedureNameList}" var="procedureNameObj">
+													<c:choose>
+														<c:when
+															test="${ procedureNameObj.procedureName eq patientDetailsById.procedureName}">
+															<option value="${procedureNameObj.procedureName}"
+																selected="selected">${patientDetailsById.procedureName}</option>
+														</c:when>
+														<c:otherwise>
+															<option value="${procedureNameObj.procedureName}">${procedureNameObj.procedureName}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -425,8 +444,18 @@ function test(){
 								</div>
 								<div class="col-md-5 col-sm-5">
 									<div class="form-group">
-										<label class="col-md-12" for="inputDefault"><spring:message
-												code="PATIENT.DETAILS.DESCRIPTION" />:</label>
+										<label class="col-md-12 required" for="inputDefault"><spring:message	code="PATIENT.DETAILS.ALLERGY" />:</label>
+										<div class="col-md-12">
+											<input type="text" name="allergy" class="form-control" id="allergy" maxlength="9" onchange="validateNameAndCode(this)"
+												value="${patientDetailsById.allergy}">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+							<div class="col-md-5 col-sm-5">
+									<div class="form-group">
+										<label class="col-md-12" for="inputDefault"><spring:message	code="PATIENT.DETAILS.DESCRIPTION" />:</label>
 										<div class="col-md-12">
 											<textarea name="specificComment" class="form-control"
 												maxlength="190" id="specificComment">${patientDetailsById.specificComment} </textarea>
@@ -434,7 +463,6 @@ function test(){
 									</div>
 								</div>
 							</div>
-
 							<div class="row">
 								<div class="col-sm-12" style="margin-top: 30px;">
 									<div class="form-group text-center">
@@ -485,10 +513,9 @@ function test(){
 								<tr>
 									<th><spring:message code="PROJECT.COMMON.SLNO" /></th>
 									<th><spring:message code="PATIENT.DETAILS.PATIENTID" /></th>
-									<th><spring:message code="HOME.REGISTER.DEPARTMENT" /></th>
+									<th><spring:message code="HOME.REGISTER.CLINICNAME" /></th>
 									<th><spring:message code="PATIENT.DETAILS.SURGEONNAME" /></th>
-									<th><spring:message
-											code="PATIENT.DETAILS.DATEOFCONSULTATION" /></th>
+									<th><spring:message	code="PATIENT.DETAILS.DATEOFCONSULTATION" /></th>
 									<th><spring:message code="PATIENT.DETAILS.NEXTDATEOFCONSULTATION" /></th>
 									<th><spring:message code="COMMON.LABEL.OPTION" /></th>
 
@@ -501,7 +528,7 @@ function test(){
 									<tr class="gradeX">
 										<td>${row}</td>
 										<td>${patientDetails.patientId}</td>
-										<td>${patientDetails.department}</td>
+										<td>${patientDetails.clinicName}</td>
 										<td>${patientDetails.signUp.firstName}</td>
 										<td>${patientDetails.doc}</td>
 										<td>${patientDetails.nextDoc}</td>
@@ -526,7 +553,7 @@ function test(){
 </section>
 
 <form id="editPatientId" action="./patientDetails.htm" method="post">
-					<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<input type="hidden" name="patientId" id="propertyBuildingId">
 </form>
 <script type="text/javascript">

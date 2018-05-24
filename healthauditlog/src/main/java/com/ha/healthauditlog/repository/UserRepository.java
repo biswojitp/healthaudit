@@ -9,5 +9,6 @@ public interface UserRepository extends JpaRepository<User,Long>{
 	
 	/*@Query("FROM PatientDetails WHERE patientId=:patientId")
 	PatientDetails findOne(@Param("patientId") Long patientId);*/
-	User findByUsername(String username);
+	@Query("FROM User WHERE userName=:userName")
+	User findByUsername(@Param("userName")String userName);
 }

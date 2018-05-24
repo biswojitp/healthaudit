@@ -13,24 +13,7 @@
 	border: 1px solid #aaaaaa;
 }
 </style>
-<script type="text/javascript">
 
-function edit(complicationId){
-	        bootbox.confirm ({
-	    	message: "Do you want to edit Complication details ?",
-	    	callback: function (proceed)
-	    	{
-	    	 if(proceed)
-	     		 
-	    	 {
-	    	   document.getElementById("propertyBuildingId").value=complicationId;
-	    	   $('#editComplicationId').submit();
-	    	 }
-	    	}
-	    })
-	}
-
-</script>
 <script type="text/javascript">
 
 function check()
@@ -140,7 +123,9 @@ function test(){
 
 				<div class="panel-body" style="display:${sectionHead}">
 					<div class="col-md-12">
+					<input type="text" name="doc" class="form-control" id="doc" maxlength="100" onchange="validateNameAndCode(this)" value="${patientDetailsById.firstName}">
 						<form class="form-horizontal form-bordered" id="saveComplicationDetails" action="./saveComplicationDetails.htm" method="post">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<input type="hidden" name="complicationId" value="${complicationDetailsById.complicationId}" id="complicationId" />
 							
 							<div class="row">
@@ -150,16 +135,16 @@ function test(){
 												code="PATIENT.DETAILS.PATIENTID" />:</label>
 										<div class="col-md-12">
 											<select class="form-control" name="patientDetails.patientId" id="patientId"
-												data-plugin-selectTwo onchange="showDiv(this);show(this)">
+												data-plugin-selectTwo onchange="showDOC(this.value);show(this)">
 												<option value=""><spring:message code="COMMON.LABEL.DROPDOWN.SELECT" /></option>
-												<c:forEach items="${patientDetailsList}" var="patientDetailsList">
+												<c:forEach items="${patientDetailsList}" var="patientDetailsObj">
 													<c:choose>
 														<c:when
-															test="${ patientDetailsList.patientId eq complicationDetailsById.patientDetails.patientId}">
-															<option value="${patientDetailsList.patientId}" selected="selected">${complicationDetailsById.patientDetails.patientId}|${complicationDetailsById.patientDetails.firstName}</option>
+															test="${ patientDetailsObj.patientId eq complicationDetailsById.patientDetails.patientId}">
+															<option value="${patientDetailsObj.patientId}" selected="selected">${complicationDetailsById.patientDetails.patientId}|${complicationDetailsById.patientDetails.firstName}</option>
 														</c:when>
 														<c:otherwise>
-															<option value="${patientDetailsList.patientId}">${patientDetailsList.patientId}|${patientDetailsList.firstName}</option>
+															<option value="${patientDetailsObj.patientId}">${patientDetailsObj.patientId}|${patientDetailsObj.firstName}</option>
 														</c:otherwise>
 													</c:choose>
 												</c:forEach>
@@ -209,18 +194,31 @@ function test(){
 										</div>
 									</div>
 								</div>
-								<div class="col-md-3 col-sm-3">
+								<%-- <div class="col-md-3 col-sm-3">
 									<div class="form-group">
-										<label class="col-md-12 required" for="inputDefault"><spring:message code="COMPLICATION.DETAILS.TIMEAFTERPROCEDURE" />:</label>
-										<div class="col-md-12">
-											<input type="text" name="timeAfterProcedure" class="form-control" id="timeAfterProcedure" maxlength="10" onchange="validateNameAndCode(this)"
-												value="${complicationDetailsById.timeAfterProcedure}">
+										<label class="col-md-12 required" for="inputDefault"><spring:message code="PATIENT.DETAILS.DATEOFCONSULTATION" />:</label>
+										<div class="col-md-12 datepicker_con">
+											<input type="text"  class="form-control jqueryNDatePicker" id="doc" name="doc" 
+											value="<fmt:formatDate value='${complicationDetailsById.doc}' pattern='dd/MM/yyyy' />"
+												placeholder="dd/mm/yyyy" onchange="dofprocedure()"	maxlength="12">
 										</div>
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
-										<label class="col-md-12 required" for="inputDefault"><spring:message code="PATIENT.DETAILS.NOOFCHILD" />:</label>
+										<label class="col-md-12 required" for="inputDefault"><spring:message
+												code="PATIENT.DETAILS.DATEOFPROCESSING" />:</label>
+										<div class="col-md-12 datepicker_con">
+											<input type="text" class="form-control jqueryNDatePicker" id="dop" name="dop"
+											value="<fmt:formatDate value='${complicationDetailsById.dop}' pattern='dd/MM/yyyy' />"
+												placeholder="dd/mm/yyyy" onclick="validateDate()"	
+												maxlength="12" >
+										</div>
+									</div>
+								</div> --%>
+								<div class="col-md-3 col-sm-3">
+									<div class="form-group">
+										<label class="col-md-12 required" for="inputDefault"><spring:message code="COMPLICATION.DETAILS.HEEMATOSPERMIA" />:</label>
 										<div class="col-md-12">
 											<input type="text" name="haematospermia" class="form-control" id="haematospermia" maxlength="9" onchange="validateNameAndCode(this)"
 												value="${complicationDetailsById.haematospermia}">
@@ -232,23 +230,30 @@ function test(){
 							<div class="row">
 								<div class="col-md-3 col-sm-3">
 									<div class="form-group">
-										<label class="col-md-12 required" for="inputDefault"><spring:message code="COMPLICATION.DETAILS.SMALLHEMATOMA" />:</label>
-										<div class="col-md-12">
-											<input type="text" name="smallHematoma" class="form-control" id="smallHematoma" maxlength="100"
-												onchange="validateNameAndCode(this)"
-												value="${complicationDetailsById.smallHematoma}">
-										</div>
-									</div>
-								</div>
-								<div class="col-md-3 col-sm-3">
-									<div class="form-group">
 										<label class="col-md-12 required" for="inputDefault"><spring:message
-												code="COMPLICATION.DETAILS.LARGEHEMATOMA" />:</label>
+												code="COMPLICATION.DETAILS.FAILUREVASIOTOMY" />:</label>
 										<div class="col-md-12">
-											<input type="text" name="largeHematoma" class="form-control"
-												id="largeHematoma" maxlength="100"
-												onchange="validateNameAndCode(this)"
-												value="${complicationDetailsById.largeHematoma}">
+											<select class="form-control" id="failureVasiotomy" name="failureVasiotomy">
+												<option value="">
+													<spring:message code="COMMON.LABEL.DROPDOWN.SELECT" />
+												</option>
+												<c:choose>
+													<c:when test="${complicationDetailsById.failureVasiotomy eq true}">
+														<option value="1" selected="selected">Yes</option>
+														<option value="0">No</option>
+													</c:when>
+													<c:when
+														test="${complicationDetailsById.failureVasiotomy eq false}">
+														<option value="0" selected="selected">No</option>
+														<option value="1">Yes</option>
+
+													</c:when>
+													<c:otherwise>
+														<option value="0">No</option>
+														<option value="1">Yes</option>
+													</c:otherwise>
+												</c:choose>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -337,10 +342,7 @@ function test(){
 					</h2>
 				</header>
 				<div class="panel-body" style="display:${sectionHead}">
-					<form id="editComplicationId" action="./complicationDetails.htm" method="post">
-						<input type="hidden" name="complicationId" id="propertyBuildingId">
-						<table class="table table-bordered table-striped mb-none"
-							id="datatable-default">
+					<table class="table table-bordered table-striped mb-none" id="datatable-default">
 							<thead>
 								<tr>
 									<th><spring:message code="PROJECT.COMMON.SLNO" /></th>
@@ -362,10 +364,8 @@ function test(){
 										<td>${complicationDetails.largeHematoma}</td>
 										<td>${complicationDetails.chronicScrotalPain}</td>
 										<td>${complicationDetails.painOnEjaculation}</td>
-										<td><a class="btn btn-xs btn-circle btn-warning"
-											onclick="edit(${complicationDetails.complicationId})"> <i
-												class="fa fa-pencil" aria-hidden="true"
-												title=<spring:message code="COMMON.LABEL.EDIT"/>></i>
+										<td><a class="btn btn-xs btn-circle btn-warning" onclick="edit(${complicationDetails.complicationId})"> 
+											<i class="fa fa-pencil" aria-hidden="true" title=<spring:message code="COMMON.LABEL.EDIT"/>></i>
 										</a></td>
 
 									</tr>
@@ -373,13 +373,44 @@ function test(){
 								</c:forEach>
 							</tbody>
 						</table>
-					</form>
-				</div>
+					</div>
 			</section>
 		</div>
 	</div>
 </section>
+
+<form id="editComplicationId" action="./complicationDetails.htm" method="post">
+ <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<input type="hidden" name="complicationId" id="propertyBuildingId">
+</form>
 <script type="text/javascript">
+function edit(complicationId){
+	        bootbox.confirm ({
+	    	message: "Do you want to edit Complication details ?",
+	    	callback: function (proceed)
+	    	{
+	    	 if(proceed)
+	     		 
+	    	 {
+	    	   document.getElementById("propertyBuildingId").value=complicationId;
+	    	   $('#editComplicationId').submit();
+	    	 }
+	    	}
+	    })
+	}
+
+</script>
+<form id="editComplicationId1" action="./patientDetailsToComplication.htm" method="post">
+ <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<input type="hidden" name="patientId" id="propertyBuildingId1">
+</form>
+<script type="text/javascript">
+function showDOC(patientId){
+	document.getElementById("propertyBuildingId1").value=patientId;
+	 $('#editComplicationId1').submit();
+}
+	 
+	 
 $(".jqueryNDatePicker").datepick({
 	constrainInput:false,
 		dateFormat: 'dd/mm/yyyy',
