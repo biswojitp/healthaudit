@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="nhPatientId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from t_patient where patient_id=$P{nhPatientId}]]>
+		<![CDATA[select * from t_patientcomplication where patient_id=$P{nhPatientId}]]>
 	</queryString>
 	<field name="patient_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -19,7 +19,7 @@
 	<field name="mobile" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="userId" class="java.lang.Long">
+	<field name="user_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<group name="patient_id">
