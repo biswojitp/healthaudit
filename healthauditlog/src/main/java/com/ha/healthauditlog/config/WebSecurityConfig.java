@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//TODO: LOAD USERS FROM DB HERE (use file UserService.java)
      auth.inMemoryAuthentication().withUser("user1").password(encoder.encode("password1")).roles("USER, ADMIN")
          .and()
-         .withUser("user2").password(encoder.encode("password2")).roles("USER");
+         .withUser("test555").password(encoder.encode("test555")).roles("USER");
  }
  
  /*@Override

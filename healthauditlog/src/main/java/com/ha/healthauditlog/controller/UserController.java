@@ -28,7 +28,7 @@ public class UserController {
 		public String welcome1() {
 		  return "app.welcome";
 		}
-		@RequestMapping("/signup.htm")
+		@RequestMapping(value = "/signup.htm", method = RequestMethod.GET)
 		public String signup() {
 		  return "user1";
 		}
@@ -47,12 +47,15 @@ public class UserController {
 			System.out.println("I am inside login");
 		  return "login";
 		}*/
-		@RequestMapping(value = "/saveSignUp.htm", method = RequestMethod.POST)
-		public RedirectView saveDetails(@ModelAttribute("user") User user,
+		@RequestMapping(value = "/signup.htm", method = RequestMethod.POST)
+		public String saveDetails(@ModelAttribute("user") User user,
 				RedirectAttributes attributes,HttpSession session ,Principal principal) {
 			//System.out.println("item name "+signUp.getItemName());
 			attributes = userService.saveSignUp(user, attributes, principal);
-			return new RedirectView("signup.htm", true);
+			
+			userService.autologin(user.getUserName(), user.getPassword());
+
+			return "app.welcome";
 		}
 
 	 /*@RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
